@@ -1,0 +1,58 @@
+GEOGESTOR-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+				 OBJECT-TYPE  FROM RFC1212;
+				 
+geogestor-mib OBJECT IDENTIFIER ::= {experimental 1}
+				 
+tabla      OBJECT-TYPE 
+           SYNTAX SEQUENCE OF TablaEntry 
+           ACCESS not-accessible 
+           STATUS mandatory 
+           DESCRIPTION 
+				"Tabla donde se guardaron los datos pertinentes."
+           ::= { geogestor-mib 1 } 
+           
+TablaEntry ::= 
+           SEQUENCE { 
+           				ipIndex INTEGER,
+						ipAddr	IpAddress
+					} 
+					
+tablaEntry    OBJECT-TYPE 
+           SYNTAX TablaEntry 
+           ACCESS not-accessible 
+           STATUS mandatory 
+           DESCRIPTION 
+				"Información referente a cada monitor."
+           INDEX { ipIndex } 
+           ::= { tabla 1 } 
+		   
+		   
+ipIndex    OBJECT-TYPE 
+           SYNTAX INTEGER 
+           ACCESS read-only 
+           STATUS mandatory 
+           DESCRIPTION 
+			"Identificador de cada cliente."
+           ::= { tablaEntry 1 } 
+           
+		   
+ipAddr     OBJECT-TYPE 
+           SYNTAX IpAddress 
+           ACCESS read-only 
+           STATUS mandatory 
+           DESCRIPTION 
+			"Direccion IP de cada cliente."
+           ::= { tablaEntry 2 } 
+		   
+numClientes   OBJECT-TYPE 
+           SYNTAX  INTEGER
+           ACCESS read-write 
+           STATUS mandatory 
+           DESCRIPTION 
+				"Es el nombre de la persona de contacto."
+           ::= { geogestor-mib 2 } 
+		   
+		   
+END
