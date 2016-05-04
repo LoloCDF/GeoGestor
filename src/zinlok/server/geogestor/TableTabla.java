@@ -39,28 +39,45 @@ import com.sun.management.snmp.agent.SnmpTableEntryFactory;
 import com.sun.management.snmp.agent.SnmpTableCallbackHandler;
 import com.sun.management.snmp.agent.SnmpTableSupport;
 
+import zinlok.server.snmp.Snmp;
+
 /**
  * La clase es utilizada para implementar el grupo "Tabla".
  * El grupo ha sido definido con el siguiente OID: 1.3.6.1.3.1.1.
  */
 public class TableTabla extends SnmpTableSupport implements Serializable {
-
+	private Snmp agente = null;
+	private TablaEntry[] entra = {null,null,null};
     /**
      * Constructor para la tabla. Inicialice metadata para "TableTabla".
      * La referencia del MBeanServer no es actualizada y las entradas creadas v�a un SNMP SET no ser�n registradas en Java DMK.
+     * @throws SnmpStatusException 
      */
-    public TableTabla(SnmpMib myMib) {
+    public TableTabla(SnmpMib myMib,Snmp agente) throws SnmpStatusException {
         super(myMib);
+        this.agente=agente;
+        for(int i=0; i<3; i++){
+        this.entra[i] = new TablaEntry(myMib,this.agente,i);
+        this.addEntry(entra[i]);
+        }
     }
 
     /**
      * Constructor para la tabla. Inicialice metadata para "TableTabla".
      * La referencia del MBeanServer es actualizada y las entradas creadas v�a un SNMP SET ser�n AUTOMATICAMENTE registradas en Java DMK.
+     * @throws SnmpStatusException 
      */
-    public TableTabla(SnmpMib myMib, MBeanServer server) {
-        this(myMib);
+    public TableTabla(SnmpMib myMib, MBeanServer server,Snmp agente) throws SnmpStatusException {
+        this(myMib,agente);
+        
+        this.agente=agente;
         this.server = server;
-    }
+        
+        for(int i=0; i<3; i++){
+        this.entra[i] = new TablaEntry(myMib,this.agente,i);
+        this.addEntry(entra[i]);
+        }
+        }
 
 
     // ------------------------------------------------------------
@@ -299,7 +316,8 @@ public class TableTabla extends SnmpTableSupport implements Serializable {
         // de la metadata, el objeto devuelto debe implementar
         // la interfaz "{0}".
         //
-        TablaEntry entry = new TablaEntry(theMib);
+        TablaEntry entry = new TablaEntry(theMib,this.agente,0);
+
         entry.IpIndex = aIpIndex;
         return entry;
     }

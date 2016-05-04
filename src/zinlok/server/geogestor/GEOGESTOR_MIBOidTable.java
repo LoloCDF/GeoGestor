@@ -34,6 +34,10 @@ public class GEOGESTOR_MIBOidTable extends SnmpOidTableSupport implements Serial
         new SnmpOidRecord("numClientes", "1.3.6.1.3.1.2", "I"),
         new SnmpOidRecord("tabla", "1.3.6.1.3.1.1", "TA"),
         new SnmpOidRecord("tablaEntry", "1.3.6.1.3.1.1.1", "EN"),
+        new SnmpOidRecord("ciudad", "1.3.6.1.3.1.1.1.6", "S"),
+        new SnmpOidRecord("localizacion", "1.3.6.1.3.1.1.1.5", "S"),
+        new SnmpOidRecord("url", "1.3.6.1.3.1.1.1.4", "S"),
+        new SnmpOidRecord("nconexiones", "1.3.6.1.3.1.1.1.3", "I"),
         new SnmpOidRecord("ipAddr", "1.3.6.1.3.1.1.1.2", "IP"),
         new SnmpOidRecord("ipIndex", "1.3.6.1.3.1.1.1.1", "I")    };
 }

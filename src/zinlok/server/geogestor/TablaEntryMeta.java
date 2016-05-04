@@ -51,9 +51,13 @@ public class TablaEntryMeta extends SnmpMibEntry
      */
     public TablaEntryMeta(SnmpMib myMib, SnmpStandardObjectServer objserv) {
         objectserver = objserv;
-        varList = new int[2];
-        varList[0] = 2;
-        varList[1] = 1;
+        varList = new int[6];
+        varList[0] = 6;
+        varList[1] = 5;
+        varList[2] = 4;
+        varList[3] = 3;
+        varList[4] = 2;
+        varList[5] = 1;
         SnmpMibNode.sort(varList);
     }
 
@@ -63,6 +67,18 @@ public class TablaEntryMeta extends SnmpMibEntry
     public SnmpValue get(long var, Object data)
         throws SnmpStatusException {
         switch((int)var) {
+            case 6:
+                return new SnmpString(node.getCiudad());
+
+            case 5:
+                return new SnmpString(node.getLocalizacion());
+
+            case 4:
+                return new SnmpString(node.getUrl());
+
+            case 3:
+                return new SnmpInt(node.getNconexiones());
+
             case 2:
                 return new SnmpIpAddress(node.getIpAddr());
 
@@ -81,6 +97,18 @@ public class TablaEntryMeta extends SnmpMibEntry
     public SnmpValue set(SnmpValue x, long var, Object data)
         throws SnmpStatusException {
         switch((int)var) {
+            case 6:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 5:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 4:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 3:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
             case 2:
                 throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
 
@@ -99,6 +127,18 @@ public class TablaEntryMeta extends SnmpMibEntry
     public void check(SnmpValue x, long var, Object data)
         throws SnmpStatusException {
         switch((int) var) {
+            case 6:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 5:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 4:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
+            case 3:
+                throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
+
             case 2:
                 throw new SnmpStatusException(SnmpStatusException.snmpRspNotWritable);
 
@@ -162,6 +202,10 @@ public class TablaEntryMeta extends SnmpMibEntry
     public boolean isVariable(long arc) {
 
         switch((int)arc) {
+            case 6:
+            case 5:
+            case 4:
+            case 3:
             case 2:
             case 1:
                 return true;
@@ -177,6 +221,10 @@ public class TablaEntryMeta extends SnmpMibEntry
     public boolean isReadable(long arc) {
 
         switch((int)arc) {
+            case 6:
+            case 5:
+            case 4:
+            case 3:
             case 2:
             case 1:
                 return true;
@@ -204,6 +252,18 @@ public class TablaEntryMeta extends SnmpMibEntry
     public String getAttributeName(long id)
         throws SnmpStatusException {
         switch((int)id) {
+            case 6:
+                return "Ciudad";
+
+            case 5:
+                return "Localizacion";
+
+            case 4:
+                return "Url";
+
+            case 3:
+                return "Nconexiones";
+
             case 2:
                 return "IpAddr";
 

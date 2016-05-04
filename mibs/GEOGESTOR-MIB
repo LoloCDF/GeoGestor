@@ -1,7 +1,8 @@
 GEOGESTOR-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-				 OBJECT-TYPE  FROM RFC1212;
+				 OBJECT-TYPE  FROM RFC1212
+				 DisplayString FROM RFC1213;
 				 
 geogestor-mib OBJECT IDENTIFIER ::= {experimental 1}
 				 
@@ -16,7 +17,11 @@ tabla      OBJECT-TYPE
 TablaEntry ::= 
            SEQUENCE { 
            				ipIndex INTEGER,
-						ipAddr	IpAddress
+						      ipAddr	IpAddress,
+						      nconexiones INTEGER,
+						      url DisplayString,
+						      localizacion DisplayString,
+						      ciudad DisplayString
 					} 
 					
 tablaEntry    OBJECT-TYPE 
@@ -46,6 +51,39 @@ ipAddr     OBJECT-TYPE
 			"Direccion IP de cada cliente."
            ::= { tablaEntry 2 } 
 		   
+nconexiones	OBJECT-TYPE
+			SYNTAX INTEGER
+			ACCESS read-only
+			STATUS mandatory
+			DESCRIPTION
+			"Numero de conexiones por cliente."
+			::= { tablaEntry 3}
+			
+url			OBJECT-TYPE
+			SYNTAX DisplayString
+			ACCESS read-only
+			STATUS mandatory
+			DESCRIPTION
+			"URL de cada cliente."
+			::= {tablaEntry 4}
+			
+localizacion  OBJECT-TYPE
+      SYNTAX DisplayString
+      ACCESS read-only
+      STATUS mandatory
+      DESCRIPTION
+        "Localizacion del cliente."
+      ::= { tablaEntry 5}
+      
+ciudad  OBJECT-TYPE
+      SYNTAX DisplayString
+      ACCESS read-only
+      STATUS mandatory
+      DESCRIPTION
+      "Ciudad desde la que se conecta el cliente."
+      ::= {tablaEntry 6}
+
+
 numClientes   OBJECT-TYPE 
            SYNTAX  INTEGER
            ACCESS read-write 

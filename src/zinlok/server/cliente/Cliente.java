@@ -2,15 +2,20 @@ package zinlok.server.cliente;
 
 import java.net.*;
 import zinlok.server.protocolo.*;
+import zinlok.server.snmp.Snmp;
 
 import java.io.*;
 
 public class Cliente extends Thread implements ClienteInterfaz {
 	// Variable que guarda el socket del cliente
 	private Socket miSocket;
+	private Snmp agente = null;
+	private int posicion = 0;
 	
-	public Cliente(Socket skCliente){
+	public Cliente(Socket skCliente, Snmp agente, int posicion){
 		this.miSocket = skCliente;
+		this.agente = agente;
+		this.posicion = posicion;
 	}
 	
 	public void run(){
@@ -35,6 +40,7 @@ public class Cliente extends Thread implements ClienteInterfaz {
 			}
 			
 			System.out.println("Se ha cerrado la conexión con el cliente: "+miSocket.getInetAddress().getHostAddress());
+			this.agente.getTabla()[this.posicion].liberar();
 			this.miSocket.close();
 		}
 		catch (IOException ex){

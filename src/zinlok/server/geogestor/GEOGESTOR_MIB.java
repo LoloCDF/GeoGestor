@@ -15,6 +15,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.InstanceAlreadyExistsException;
 
+import com.sun.management.snmp.SnmpStatusException;
 // jdmk imports
 //
 import com.sun.management.snmp.agent.SnmpMib;
@@ -22,16 +23,19 @@ import com.sun.management.snmp.agent.SnmpMibNode;
 import com.sun.management.snmp.agent.SnmpMibTable;
 import com.sun.management.snmp.agent.SnmpStandardObjectServer;
 
+import zinlok.server.snmp.Snmp;
+
 /**
  * La clase es utilizada para representar "GEOGESTOR-MIB".
  * Edite el fichero si quiere modificar el comportamiento de la MIB.
  */
 public class GEOGESTOR_MIB extends SnmpMib implements Serializable {
-
+	private Snmp agente = null;
     /**
      * Constructor por defecto. Inicialice el �rbol que representa la MIB.
      */
-    public GEOGESTOR_MIB() {
+    public GEOGESTOR_MIB(Snmp agente) {
+    	this.agente=agente;
         mibName = "GEOGESTOR_MIB";
     }
 
@@ -179,18 +183,19 @@ public class GEOGESTOR_MIB extends SnmpMib implements Serializable {
      * Tenga en cuenta que cuando use la versi�n est�ndar
      * de la metadata, el objeto devuelto debe implementar
      * la interfaz "{0}".
+     * @throws SnmpStatusException 
      **/
     protected Object createGeogestor_mibMBean(String groupName,
-                String groupOid,  ObjectName groupObjname, MBeanServer server)  {
+                String groupOid,  ObjectName groupObjname, MBeanServer server) throws SnmpStatusException  {
 
         // Tenga en cuenta que cuando use la versi�n est�ndar
         // de la metadata, el objeto devuelto debe implementar
         // la interfaz "{0}".
         //
         if (server != null) 
-            return new Geogestor_mib(this,server);
+            return new Geogestor_mib(this,server,this.agente);
         else 
-            return new Geogestor_mib(this);
+            return new Geogestor_mib(this,this.agente);
     }
 
 

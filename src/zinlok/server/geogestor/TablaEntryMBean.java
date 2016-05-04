@@ -15,6 +15,26 @@ import com.sun.management.snmp.SnmpStatusException;
 public interface TablaEntryMBean {
 
     /**
+     * Getter para la variable "Ciudad".
+     */
+    public String getCiudad() throws SnmpStatusException;
+
+    /**
+     * Getter para la variable "Localizacion".
+     */
+    public String getLocalizacion() throws SnmpStatusException;
+
+    /**
+     * Getter para la variable "Url".
+     */
+    public String getUrl() throws SnmpStatusException;
+
+    /**
+     * Getter para la variable "Nconexiones".
+     */
+    public Integer getNconexiones() throws SnmpStatusException;
+
+    /**
      * Getter para la variable "IpAddr".
      */
     public String getIpAddr() throws SnmpStatusException;

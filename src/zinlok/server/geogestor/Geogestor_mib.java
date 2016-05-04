@@ -1,6 +1,4 @@
-
 package zinlok.server.geogestor;
-
 //
 // Generado por mibgen version 5.1 (03/08/07) para compilar GEOGESTOR-MIB.
 //
@@ -18,6 +16,8 @@ import com.sun.management.snmp.SnmpStatusException;
 // jdmk imports
 //
 import com.sun.management.snmp.agent.SnmpMib;
+
+import zinlok.server.snmp.Snmp;
 
 /**
  * La clase es utilizada para implementar el grupo "Geogestor_mib".
@@ -37,29 +37,33 @@ public class Geogestor_mib implements Geogestor_mibMBean, Serializable {
      */
     protected TableTabla Tabla;
 
-
+    private Snmp agente = null;
     /**
      * Constructor para el grupo "Geogestor_mib".
      * Si el grupo contiene una tabla, las entradas creadas v�a un SNMP SET no ser�n registradas en Java DMK.
+     * @throws SnmpStatusException 
      */
-    public Geogestor_mib(SnmpMib myMib) {
-        Tabla = new TableTabla (myMib);
+    public Geogestor_mib(SnmpMib myMib, Snmp agente) throws SnmpStatusException {
+    	this.agente=agente;
+        Tabla = new TableTabla (myMib,this.agente);
     }
 
 
     /**
      * Constructor para el grupo "Geogestor_mib".
      * Si el grupo contiene una tabla, las entradas creadas v�a un SNMP SET ser�n AUTOMATICAMENTE registradas en Java DMK.
+     * @throws SnmpStatusException 
      */
-    public Geogestor_mib(SnmpMib myMib, MBeanServer server) {
-        Tabla = new TableTabla (myMib, server);
+    public Geogestor_mib(SnmpMib myMib, MBeanServer server,Snmp agente) throws SnmpStatusException {
+    	this.agente=agente;
+        Tabla = new TableTabla (myMib, server,this.agente);
     }
 
     /**
      * Getter para la variable "NumClientes".
      */
     public Integer getNumClientes() throws SnmpStatusException {
-        return NumClientes;
+        return this.agente.getNumClientes();
     }
 
     /**
