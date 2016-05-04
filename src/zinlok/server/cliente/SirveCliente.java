@@ -1,9 +1,13 @@
 package zinlok.server.cliente;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+
+import zinlok.server.geolocalizacion.Localiza;
 import zinlok.server.snmp.Snmp;
 
 public class SirveCliente extends Thread implements SirveClienteInterfaz {
@@ -14,7 +18,7 @@ public class SirveCliente extends Thread implements SirveClienteInterfaz {
 	private ServerSocket skServidor;
 	private Socket skCliente;
 	private Snmp servidorSnmp = null;
-	
+	private Localiza localizador = null;
 	// Puerto del servidor
 	int puerto = 5000;
 	
@@ -30,6 +34,7 @@ public class SirveCliente extends Thread implements SirveClienteInterfaz {
 		int posicion = -1;
 		
 		try{
+			this.localizador=new Localiza();
 			this.skServidor = new ServerSocket(this.puerto);
 			System.out.println("Escucho el puerto "+this.puerto);
 			
@@ -60,6 +65,7 @@ public class SirveCliente extends Thread implements SirveClienteInterfaz {
 					}
 					this.servidorSnmp.getTabla()[posicion].ocupar();
 					this.servidorSnmp.getTabla()[posicion].setIpAddr(this.skCliente.getInetAddress().getHostAddress());
+					this.localizador.insertaLocalizacion(skCliente.getInetAddress(), servidorSnmp, posicion);
 					
 					System.out.println("Sirvo al cliente: " + this.skCliente.getInetAddress().toString());
 					this.cliente=new Cliente(skCliente,servidorSnmp,posicion);
@@ -68,8 +74,15 @@ public class SirveCliente extends Thread implements SirveClienteInterfaz {
 					posicion=-1;
 				}
 			}
-		} catch( Exception e){
+		} catch( IOException e){
 			System.out.println(e.getMessage());
+		} catch (GeoIp2Exception e) {
+			System.out.println("La IP no está en la BBDD, tal vez sea una IP privada.");
+			System.out.println("Sirvo al cliente: " + this.skCliente.getInetAddress().toString());
+			this.cliente=new Cliente(skCliente,servidorSnmp,posicion);
+			this.cliente.start();
+			this.listaClientes.add(this.cliente);
+			posicion=-1;
 		}
 	}
 	

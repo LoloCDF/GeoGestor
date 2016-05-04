@@ -40,7 +40,11 @@ public class Cliente extends Thread implements ClienteInterfaz {
 			}
 			
 			System.out.println("Se ha cerrado la conexión con el cliente: "+miSocket.getInetAddress().getHostAddress());
-			this.agente.getTabla()[this.posicion].liberar();
+			this.agente.getTabla()[this.posicion].setNconexiones(this.agente.getTabla()[this.posicion].getNconexiones()-1);
+			
+			if (this.agente.getTabla()[this.posicion].getNconexiones()==0)
+				this.agente.getTabla()[this.posicion].liberar();
+			
 			this.miSocket.close();
 		}
 		catch (IOException ex){

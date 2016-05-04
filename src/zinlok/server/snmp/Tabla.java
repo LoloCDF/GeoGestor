@@ -60,6 +60,12 @@ public class Tabla implements TablaInterface{
 	}
 	
 	public void liberar(){
+		this.ipAddr="0.0.0.0";
+		this.nconexiones=0;
+		this.url="none";
+		this.localizacion="desconocida";
+		this.ciudad="desconocida";
+		
 		this.ocupado=false;
 	}
 }
